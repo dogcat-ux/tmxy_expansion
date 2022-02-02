@@ -26,6 +26,7 @@ function tmpPost(funName, paramName, res, url) {
     '    // @ts-ignore\n' +
     '    return params.append(key, value);\n' +
     '  })');
+  logging("// @ts-ignore")
   logging(`return request` + '<' + 'API.' + res + '>' + "(`"+url+"`, {");
   logging('    method: \'POST\',\n' +
     '    data: params,\n' +
@@ -41,6 +42,7 @@ function tmpPut(funName, paramName, res, url) {
     '    // @ts-ignore\n' +
     '    return params.append(key, value);\n' +
     '  })');
+  logging("// @ts-ignore")
   logging(`return request` + '<' + 'API.' + res + '>' + "(`"+url+"`, {");
   logging('    method: \'PUT\',\n' +
     '    headers: {\n' +
@@ -51,10 +53,25 @@ function tmpPut(funName, paramName, res, url) {
     '  });\n' +
     '}\n');
 }
+function tmpGET(funName, paramName, res, url) {
+  empty();
+  logging(`export async function ${funName} (options?: { [key: string]: any }) {`);
+  logging("// @ts-ignore")
+  logging(`return request` + '<' + 'API.' + res + '>' + "(`"+url+"`, {");
+  logging('    method: \'GET\',\n' +
+    '    headers: {\n' +
+    '      \'Content-Type\': \'application/json\',\n' +
+    '    },\n' +
+    '    ...(options || {}),\n' +
+    '  });\n' +
+    '}\n');
+}
 
+let name="userInfo"
 //funName, paramName,res,url
-tmpPost('login',
-  'loginParam',
-  'loginRes',
-  'api/v3/user/login');
+tmpPost(name,
+    name+'Param',
+    name+'Res',
+  // 'api/v3/'+name);
+  'api/v3/user-info');
 // tmpPut('amendActivity', 'AmendActivityParam', 'AmendActivityRes', 'api/v2/activity/${activity_id}');

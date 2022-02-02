@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import store from './store/index';
+import "../src/assets/styles/global.scss"
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from 'react-redux';
-
+// import 'lib-flexible';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

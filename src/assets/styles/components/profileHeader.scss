@@ -1,0 +1,22 @@
+.scoped {
+  .header_box {
+    padding: 5px 10px 0 10px;
+    align-items: center;
+  }
+
+  .icon {
+    margin: 0 15px 0 15px;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .info_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+}

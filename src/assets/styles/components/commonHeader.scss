@@ -1,0 +1,104 @@
+.scoped {
+  padding: 5px 10px;
+
+  .user_header {
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    align-items: center;
+  }
+
+  .username {
+    font-size: var(--sencond-title-font);
+    font-weight: normal;
+  }
+
+  .my-adm-dropdown {
+    //background-color: white;
+  }
+
+  .my-adm-dropdown .my-adm-dropdown-nav {
+    display: flex;
+  }
+
+  .my-adm-dropdown-open .my-adm-dropdown-nav {
+    //border-bottom: 2px solid var(--adm-border-color);
+  }
+
+  .my-adm-dropdown-item {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+    cursor: pointer;
+  }
+
+  .my-adm-dropdown-item .my-adm-dropdown-item-title {
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 100%;
+    padding: 0 5px 5px 0;
+  }
+
+  .my-adm-dropdown-item .my-adm-dropdown-item-title-text {
+    margin-right: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .my-adm-dropdown-item .my-adm-dropdown-item-title-arrow {
+    margin-right: 10px;
+    width: 16px;
+    transform: rotate(0deg) translate(0, -2px);
+    transition: all ease 0.2s;
+  }
+
+  .my-adm-dropdown-item .my-adm-dropdown-item-title-arrow-active {
+    transform: rotate(180deg) translate(0, -2px);
+  }
+
+  .my-adm-dropdown-item .my-adm-dropdown-item-title:active {
+    opacity: 0.7;
+  }
+
+  .my-adm-dropdown-item-highlight {
+    color: var(--adm-color-primary);
+  }
+
+  .my-adm-dropdown-item-active {
+    color: var(--adm-color-primary);
+  }
+
+  .my-adm-dropdown-item-active .my-adm-dropdown-item-title:after {
+    margin-top: -2px;
+    transform: rotate(135deg);
+  }
+
+  .my-adm-dropdown-item-content {
+    width: 100%;
+    //background: white;
+  }
+
+  .my-adm-dropdown-item-content-hidden {
+    display: none;
+  }
+
+  .my-adm-dropdown-popup {
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .my-adm-dropdown-popup .my-adm-dropdown-popup-mask {
+    position: absolute;
+  }
+
+  .my-adm-dropdown-popup .my-adm-dropdown-popup-body {
+    position: absolute;
+  }
+}

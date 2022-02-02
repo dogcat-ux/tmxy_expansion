@@ -1,0 +1,27 @@
+//@import '~antd/es/style/themes/default.less';
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+  background-color: #f0f2f5;
+  background-image: url('../img/back.svg');
+  background-repeat: no-repeat;
+  background-position: center 110px;
+  background-size: 100%;
+  justify-content: center;
+  align-items: center;
+  .customBody {
+    margin-top: 20px;
+    width: 300px;
+    height: 280px;
+    background-color: #f0f2f5;
+  }
+  .space{
+    margin-bottom: 10px;
+  }
+}
+
+.form {
+  background-color: #f0f2f5;
+}

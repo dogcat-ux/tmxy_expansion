@@ -1,0 +1,68 @@
+.cover_img {
+  width: 150px;
+  height: 80px;
+
+  img {
+    width: 150px;
+    height: auto;
+  }
+}
+
+.map-container {
+  //  //display: flex;
+  //  //flex-direction: column;
+  //  //height: auto;
+  //  //width: 375px;
+}
+
+.map-main {
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  //margin-top: 100px;
+  //height: 200px;
+  //height: 600px;
+}
+
+//.map-box {
+//  width: 375px;
+//  //min-height: 600px;
+//  min-height: 100%;
+//  height: auto;
+//}
+.tangram-suggestion-main {
+  z-index: 9999999999;
+}
+
+.list {
+  width: 100%;
+  //height: 300px;
+  overflowY: auto;
+}
+
+.search-bar {
+  width: 100%;
+  height: 30px;
+  background-color: #eeeeee;
+}
+.location-select{
+
+}
+.map-button{
+  width: 100%;
+}
+.position-str{
+  width: 300px;
+}
+
+.apply-upload .ant-upload.ant-upload-select-picture-card {
+  //width: 375px;
+  //height: 200px;
+  width: 150px;
+  height: 80px;
+}
+.apply-upload{
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+}

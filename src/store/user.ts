@@ -16,9 +16,10 @@ const actions = {
 }
 
 const userReducer = (state: any = initState, action: any) => {
-  switch (action.type) {
+  const {type,data}=action;
+  switch (type) {
     case SAVE:
-      const {user_name, phone_number, avatar, stu_number, authority, token,} = action.payload;
+      const {user_name, phone_number, avatar, stu_number, authority, token,} = data;
       state.user_name = user_name;
       state.phone_number = phone_number;
       state.stu_number = stu_number;
@@ -49,9 +50,9 @@ const userReducer = (state: any = initState, action: any) => {
       return {...state};
 
     case UPDATE_AVATAR:
-      state.avatar = action.payload;
-      localStorage.setItem('avatar', action.payload);
-      return {...state, avatar: action.payload};
+      state.avatar = data;
+      localStorage.setItem('avatar', data);
+      return {...state, avatar: data};
     default:
       return state;
   }

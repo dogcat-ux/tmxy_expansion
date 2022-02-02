@@ -1,0 +1,15 @@
+.home_content {
+  width: 375px;
+  height: 200px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  user-select: none;
+  //background-color: saddlebrown;
+  .img{
+    width: 375px;
+    height: 200px;
+  }
+}
