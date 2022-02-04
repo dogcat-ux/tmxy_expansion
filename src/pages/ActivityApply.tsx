@@ -33,14 +33,16 @@ import {removeProperty} from "../utils/dataAmend";
 import _ from "lodash";
 import feedBack from "../utils/apiFeedback";
 import {Code} from "../constant";
+import {useNavigate} from "react-router-dom";
 
 const {Text, Link} = Typography;
 const {Search} = Input;
 const {Option} = Select;
 const {TextArea} = Input;
 const ActivityApply: React.FC = () => {
+  const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState<string>('');
-  const [isMap, setIsMap] = useState<boolean>(false);
+  const [formData, setFormData] = useState<object>();
   // 1报名启动时间 2报名截止时间 3活动启动时间 4活动截止时间
   const [date1, setDate1] = useState<any>()
   const [date2, setDate2] = useState<any>()
@@ -70,11 +72,13 @@ const ActivityApply: React.FC = () => {
     let v = _.cloneDeep(values)
     v = removeProperty("sign_up_time")(v)
     v = removeProperty("activity_time")(v)
+    v = removeProperty("sign_in_place")(v)
     v = removeProperty("image")(v)
     if (date1 && date2 && date3 && date4) {
       const res = await activityCreat({
         ...v,
         image: values?.image?.file,
+        sign_in_place: position,
         sign_up_start_time: toTimeStamp(date1),
         sign_up_end_time: toTimeStamp(date2),
         activity_start_time: toTimeStamp(date3),
@@ -82,9 +86,8 @@ const ActivityApply: React.FC = () => {
         activity_place_longitude: lng,
         activity_place_latitude: lat,
       });
-      feedBack(res, "创建成功并提交审核", "创建失败");
-      if (res?.status === Code.SuccessCode) {
-
+      if (feedBack(res, "创建成功并提交审核", "创建失败")) {
+        navigate("/home");
       }
     } else {
       Toast.show("请选择日期");
@@ -187,9 +190,25 @@ const ActivityApply: React.FC = () => {
     })
   }
   // setIsSign(false);}
+  // @ts-ignore
   return <Auth title={"活动申请"} isBack={true} isBackConfirm>
     {!isSign && <div className="theme-main">
       <Form
+          onValuesChange={(_, allValues) => {
+            setFormData({...allValues})
+          }}
+          initialValues={formData ? {
+            ...formData,
+            sign_in_place: position || "11",
+            sign_up_time: "date",
+            activity_time: "date",
+            image: "image"
+          } : {
+            sign_in_place: position || "11",
+            sign_up_time: "date",
+            activity_time: "date",
+            image: "image"
+          }}
           onFinish={onFinish}
           footer={
             <Button block type='submit' color='primary' size='large'>
@@ -202,8 +221,7 @@ const ActivityApply: React.FC = () => {
                    label='活动名称'>
           <Input maxLength={50}/>
         </Form.Item>
-        <Form.Item name='sign_in_place' rules={[{required: true, message: "请输入必填信息"}]} label='签到地点'
-                   initialValue={position}>
+        <Form.Item name='sign_in_place' rules={[{required: true, message: "请输入必填信息"}]} label='签到地点'>
           <Space>
             <LocationFill onClick={handleSign}/>
             <Input value={position} disabled></Input>
@@ -251,8 +269,7 @@ const ActivityApply: React.FC = () => {
           <Input maxLength={100}/>
         </Form.Item>
         {/*时间*/}
-        <Form.Item name='sign_up_time' rules={[{required: true, message: "请输入必填信息"}]} label='报名启止时间'
-                   initialValue="date">
+        <Form.Item name='sign_up_time' rules={[{required: true, message: "请输入必填信息"}]} label='报名启止时间'>
           <Space>
             <Button onClick={() => {
               DatePicker.prompt({
@@ -277,8 +294,8 @@ const ActivityApply: React.FC = () => {
             }}>{date2 ? dateChangeCommon(date2) : "年-月-日-时-分"}</Button>
           </Space>
         </Form.Item>
-        <Form.Item name='activity_time' rules={[{required: true, message: "请输入必填信息"}]} label='活动启止时间'
-                   initialValue="date">
+        <Form.Item name='activity_time' rules={[{required: true, message: "请输入必填信息"}]} label='活动启止时间'>
+          {/*initialValue="date">*/}
           <Space>
             <Button onClick={() => {
               DatePicker.prompt({
@@ -327,7 +344,7 @@ const ActivityApply: React.FC = () => {
     {isSign && <div className="location-select">
       <Search placeholder="搜索框如果要匹配准确请输入完整的省,市信息" id="ac" size="large" onSearch={onSearch}/>
       <AutoComplete input="ac" onHighlight={onHighlight} onConfirm={e => {
-        console.log("1111", e)
+        console.log("e", e)
       }} onSearchComplete={e => {
         console.log("e", e);
       }}/>

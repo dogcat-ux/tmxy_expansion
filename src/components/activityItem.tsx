@@ -16,7 +16,7 @@ const ActivityItem: FC<{ value: API.personActivityResItem }> = ({value}) => {
         })
       }}>
         <Space>
-          <Image src={value?.image || ''} width={100} height={100} fit='fill'/>
+          <Image src={value?.image || ''}  fit='fill' className="activity-item-img" lazy/>
           <div className="activity-item">
             <Title level={4}>{value?.activity_name}</Title>
             <Row>

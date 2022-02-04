@@ -13,4 +13,4 @@ export const AK = "HtSGgaOXU4ABpx84uFyjC04urQdGYq0s"
 export const BASE_URL = "http://139.9.196.99:3000/"
 export const BaiDu_URL = "https://api.map.baidu.com/"
 export const PAGE1 = 1
-export const PAGE_SIZE = 10
+export const PAGE_SIZE = 6

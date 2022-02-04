@@ -127,7 +127,7 @@ declare namespace API {
     semester_end_time_stamp?: number
   }
   type SemesterListParam = {
-    year: string; //学年
+    year: string | number; //学年
   };
   type SemesterListResItem = {
     stu_number?: string;
@@ -143,8 +143,10 @@ declare namespace API {
     error?: string;
   };
   type YearListResItem = {
-    stu_number: string;
-    year_name?: string;
+    // stu_number: string;
+    year?: string;
+    year_end_time?: number
+    year_start_time?: number
   };
   //  "proxy": "http://139.9.196.99:3000/",
   type YearListRes = {

@@ -18,6 +18,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../store/user";
 import {Code} from "../constant";
 import "../assets/styles/userCenter.scss"
+
 const UserCenter: React.FC = () => {
   const [score, setScore] = useState<number>(0);
   const [appliedNumber, setAppliedNumber] = useState<number>(0);
@@ -26,7 +27,7 @@ const UserCenter: React.FC = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const sendApi = async (key?: number) => {
-    const [allScoreRes,activityAppliedNumberRes,personRankNumberRes] = await Promise.all([allScore(),activityAppliedNumber(),personRankNumber()])
+    const [allScoreRes, activityAppliedNumberRes, personRankNumberRes] = await Promise.all([allScore(), activityAppliedNumber(), personRankNumber()])
     setScore(allScoreRes?.data);
     setAppliedNumber(activityAppliedNumberRes?.data);
     setRankNumber(personRankNumberRes?.data);
@@ -117,11 +118,10 @@ const UserCenter: React.FC = () => {
         修改密码
       </List.Item>
       <List.Item arrow={false}
-        // onClick={handleLogout}
+                 onClick={handleLogout}
       >
         <TextDeletionOutline
           color="var(--adm-color-primary)"
-          onClick={handleLogout}
           className="theme-pad"/>
         退出登录
       </List.Item>

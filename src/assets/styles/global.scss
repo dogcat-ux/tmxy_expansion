@@ -351,9 +351,10 @@ template {
   --title-font: 18px;
   --sencond-title-font: 18px;
   /*--common-font: 12px;*/
-  /*--adm-color-primary: #1677ff;*/
+  //--adm-color-primary: #85a5ff;
   /*--adm-color-primary: rgb(0, 128, 128);*/
   --adm-color-primary: #000000;
+  //--adm-color-primary: #13c2c2;
   --adm-color-success: #00b578;
   --adm-color-warning: #ff8f1f;
   --adm-color-danger: #ff3141;
@@ -367,8 +368,10 @@ template {
   helvetica, segoe ui, arial, roboto, 'PingFang SC', 'miui',
   'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
 /*  my*/
-/*  --color-primary: rgb(0, 128, 128);*/
+///*  --color-primary: rgb(0, 128, 128);*/
+//  --color-primary: #030852;
   --color-primary: #000000;
+  --color-primary-hover: #2f2f2f;
   --color-white: #ffffff;
   /*--color-primary: #69c0ff;*/
 }

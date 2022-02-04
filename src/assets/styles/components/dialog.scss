@@ -12,16 +12,25 @@ $comDialogHeight:50px;
     position: fixed;
     width: $comDialogWidth;
     color: var(--color-white);
+    //background-color: var(--color-primary);
+    z-index: 666;
     background-color: var(--color-primary);
     border-radius: 25px;
     height: $comDialogHeight;
-    .com-dialog-item{
-      //border: 1px solid #000000;
-      width: $comDialogWidth/3;
-      text-align: center;
-      height: $comDialogHeight;
-      line-height: $comDialogHeight;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    //.com-dialog-item{
+    //  //border: 1px solid #000000;
+    //  width: $comDialogWidth/3;
+    //  text-align: center;
+    //  height: $comDialogHeight;
+    //  line-height: $comDialogHeight;
+    //}
+    //
+    //.com-dialog-item:hover{
+    //  background-color: var(--color-primary-hover);
+    //}
   }
   //
   //.com-dialog-icon {

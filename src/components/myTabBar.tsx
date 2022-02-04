@@ -8,7 +8,7 @@ import {
 } from 'antd-mobile-icons';
 import {useSelector} from "react-redux";
 import {RootState} from "../store";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {createPortal} from "react-dom";
 import Dialog from "./Dialog";
 
@@ -16,6 +16,9 @@ const MyTabBar: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   const [isShowDialog, setIsShowDialog] = useState(false);
+  // const history = useHistory()
+  const location = useLocation()
+  const { pathname } = location
   // const toggleDialog = () => {
   //   setIsShowDialog(prev => !prev.isShowDialog);
   // }
@@ -31,17 +34,17 @@ const MyTabBar: React.FC = () => {
 
   const tabs = [
     {
-      key: 'home',
+      key: '/home',
       title: '首页',
       icon: <ContentOutline/>,
     },
     {
-      key: 'ActivityApply',
+      key: '/ActivityApply',
       title: '参与活动',
       icon: <AppOutline/>,
     },
     {
-      key: 'UserCenter',
+      key: '/UserCenter',
       title: '个人中心',
       icon: <UserContactOutline/>,
     },
@@ -54,13 +57,28 @@ const MyTabBar: React.FC = () => {
       setIsShowDialog(!isShowDialog);
     }
   };
+  const setRouteActive = (key: string) => {
+    if(key === "/ActivityApply"){
+      setIsShowDialog(!isShowDialog);
+    }else{
+      navigate(`${key}`)
+    }
+  }
+  useEffect(()=>{
+    console.log(pathname)
+  },[])
   return (
     <>
-      <TabBar onChange={handleChange} style={{background: '#ffffff'}} activeKey={activeKey}>
-        {tabs.map((item) => (
-          <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
+      <TabBar activeKey={pathname} onChange={value => setRouteActive(value)}>
+        {tabs.map(item => (
+          <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
         ))}
       </TabBar>
+      {/*<TabBar onChange={handleChange} style={{background: '#ffffff'}} activeKey={activeKey}>*/}
+      {/*  {tabs.map((item) => (*/}
+      {/*    <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>*/}
+      {/*  ))}*/}
+      {/*</TabBar>*/}
       {
         isShowDialog
         && <Dialog

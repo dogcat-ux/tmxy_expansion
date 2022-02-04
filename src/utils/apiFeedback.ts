@@ -9,12 +9,14 @@ const feedBack = (res: any, sucMsg: string, failMsg: string) => {
       content:sucMsg,
       icon:"success"
     });
+    return true;
   } else {
     // Toast.show(res?.msg + res?.data || failMsg);
     Toast.show({
       content:res?.msg + res?.data || failMsg,
       icon:"fail"
     });
+    return false;
     // Modal.error({
     //   content: res?.msg + res?.data || failMsg,
     // });

@@ -52,24 +52,21 @@ const columns3: Array<{ title: string, dataIndex: string, key: string }> = [
   },
 ]
 const CumulativeScore: React.FC = () => {
-  const [items, setItems] = useState<API.rankResItem[]>();
-  const [items1, setItems1] = useState<API.rankResItem[]>();
-  const [items2, setItems2] = useState<API.rankResItem[]>();
+  const [items, setItems] = useState<API.rankResItem[]>([]);
+  const [items1, setItems1] = useState<API.rankResItem[]>([]);
+  const [items2, setItems2] = useState<API.rankResItem[]>([]);
   const [score, setScore] = useState<number>();
   const [years, setYears] = useState<string[]>();
   const [semesters, setSemesters] = useState<string[]>();
   const [year, setYear] = useState<string>();
   const [semester, setSemester] = useState<string>();
   const sendApi = async (key?: number) => {
-    const [allScoreRes,
-      {data: {activity, extra_add, extra_deduction}},
-      years
-    ] = await Promise.all([allScore(), allScorePost(), yearList()])
-    setScore(allScoreRes?.data);
-    setItems(activity);
-    setItems1(extra_add);
-    setItems2(extra_deduction);
-    setYears(years?.data?.item.map((value: API.YearListResItem) => value?.year_name))
+    const [allScoreRes, res, years] = await Promise.all([allScore(), allScorePost(), yearList()])
+    allScoreRes?.data&&setScore(allScoreRes?.data);
+    res?.data?.activity&&setItems(res?.data?.activity);
+    res?.data?.extra_add&&setItems1(res?.data?.extra_add);
+    res?.data?.extra_deduction&&setItems2(res?.data?.extra_deduction);
+    setYears(years?.data?.item?.map((value: API.YearListResItem) => value?.year?.toString()))
   }
   useEffect(() => {
     sendApi()
@@ -79,7 +76,7 @@ const CumulativeScore: React.FC = () => {
   }, [year,semesters])
   useEffect(() => {
     year && semesterList({year}).then(res => {
-      setSemesters(res?.data?.item.map((value: API.SemesterListResItem) => value?.semester_name))
+      setSemesters(res?.data?.item?.map((value: API.SemesterListResItem) => value?.semester_name?.toString()))
     })
   }, [year])
   return <Auth title={"累计分数明细"} isBack>
@@ -108,7 +105,7 @@ const CumulativeScore: React.FC = () => {
           </>
         }
       >
-        <Table dataSource={items} columns={columns} pagination={false}  scroll={{ x: 375, y: 300 }}/>
+        <Table dataSource={items||[]} columns={columns} pagination={false}  scroll={{ x: 375, y: 300 }}/>
       </Card>
       <Card
         title={
@@ -117,7 +114,7 @@ const CumulativeScore: React.FC = () => {
             <span style={{marginLeft: '2px'}}>额外加分</span>
           </>
         }>
-        <Table dataSource={items1} columns={columns2} pagination={false}  scroll={{ x: 375, y: 300 }}/>
+        <Table dataSource={items1||[]}  columns={columns2} pagination={false}  scroll={{ x: 375, y: 300 }}/>
       </Card>
       <Card
         title={
@@ -126,7 +123,7 @@ const CumulativeScore: React.FC = () => {
             <span style={{marginLeft: '2px'}}>额外减分</span>
           </>
         }>
-        <Table dataSource={items2} columns={columns3} pagination={false}  scroll={{ x: 375, y: 300 }}/>
+        <Table dataSource={items2||[]} columns={columns3} pagination={false}  scroll={{ x: 375, y: 300 }}/>
       </Card>
     </div>
   </Auth>
