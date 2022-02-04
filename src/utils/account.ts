@@ -24,6 +24,11 @@ export const timeStampToMoement = (time: any) => {
 };
 
 export const afterNow = (time: any) => {
+  console.log("time",time)
+  console.log("time",dateChange(time))
+  if(typeof time==="number"){
+    return moment(Date.parse(new Date().toString())).isBefore(moment(dateChange(time)))
+  }
   return moment(Date.parse(new Date().toString())).isBefore(moment(time))
 }
 

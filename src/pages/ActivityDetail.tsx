@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Auth from "../components/auth";
-import {noticeApi, noticeDetail} from "../api/ann";
 import {useLocation, useParams} from "react-router-dom";
 import EmptyBox from "../components/emptyBox";
-import {Card, Toast, Button, Image, Dialog, Input, Tag} from 'antd-mobile'
-import {AntOutline, RightOutline} from 'antd-mobile-icons'
-import {dateChange, dateChangeDay} from "../utils/account";
+import {Card, Button, Image, Input, Tag, Modal, Form} from 'antd-mobile'
+import {AntOutline} from 'antd-mobile-icons'
+import {afterNow, dateChange} from "../utils/account";
 import {Descriptions, Space, Table, Typography} from "antd";
 import "../assets/styles/components/ActivityDetail.scss"
 import {activityApply, activityPublicity} from "../api/activity";
 import {Code} from "../constant";
+import feedBack from "../utils/apiFeedback";
 
-const {Text, Title} = Typography;
+const {Title} = Typography;
 const columns: Array<{ title: string, dataIndex: string, key: string }> = [
   {
     title: '学号',
@@ -33,39 +33,20 @@ const columns: Array<{ title: string, dataIndex: string, key: string }> = [
 const ActivityDetail: React.FC = () => {
   const {state} = useLocation();
   const {id} = useParams();
-  const [value, setValue] = useState('')
-  const [items, setItems] = useState<any>(state);
+  const [loading, setLoading] = useState(false)
+  const [items] = useState<any>(state);
+  const father = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false)
   const [items1, setItems1] = useState<API.activityPublicityResItem[]>();//公示
-  const [type, setType] = useState<number>();//0过期 1正常 2已经报名
-  const handleSignUp = async () => {
-    if (value) {
-      const res = await activityApply(id, {code: value})
-      if (res.status === Code.SuccessCode) {
-        Toast.show({
-          icon: "success",
-          content: "报名成功！"
-        })
-      } else {
-        Toast.show({
-          icon: "fail",
-          // @ts-ignore
-          content: res?.msg || '报名失败！'
-        })
-      }
-    } else {
-      Toast.show({
-        icon: "fail",
-        content: "请输入活动码！"
-      })
-    }
+  const handleSignUp = async (data: { code: string }) => {
+    setLoading(true)
+    const res = await activityApply(id, {...data})
+    setLoading(false)
+    if (feedBack(res, "报名成功", "报名失败")) setVisible(false);
   }
   const send = async () => {
-    const {status} = await activityApply(id)
-    status === Code.ActivityExpired && setType(0);
-    status === Code.hasIn && setType(2);
-    status === Code.SuccessCode && setType(1);
     const res = await activityPublicity(id)
-    if(res?.status===Code.SuccessCode){
+    if (res?.status === Code.SuccessCode) {
       setItems1(res?.data?.item);
     }
   }
@@ -76,6 +57,26 @@ const ActivityDetail: React.FC = () => {
   // @ts-ignore
   return (
     <EmptyBox isEmpty={JSON.stringify(items) === "{}"}>
+      <div id="father" ref={father}/>
+      <Modal
+        visible={visible}
+        showCloseButton={true}
+        content={(<div className="content">
+          <Form onFinish={handleSignUp}
+                footer={
+                  <Button block type="submit" color="primary" loading={loading}>
+                    确认
+                  </Button>}>
+            <Form.Item rules={[{required: true, message: '活动码不能为空'},]}
+                       name="code">
+              <Input placeholder='请输入活动码'/>
+            </Form.Item>
+          </Form>
+        </div>)}
+        onClose={() => {
+          setVisible(false)
+        }}
+      />
       <Auth title={items.activity_name} isBack>
         <Image src={items.image} className="activity-detail-img" fit='cover'/>
         <Card
@@ -91,30 +92,36 @@ const ActivityDetail: React.FC = () => {
           }
           extra={<Button color="primary"
                          shape="rounded"
-                         disabled={type !== 1}
-                         onClick={() =>
-                           Dialog.confirm({
-                             content: <div>
-                               <Input
-                                 placeholder='请输入活动码'
-                                 defaultValue={value}
-                                 readOnly={false}
-                                 onChange={val => {
-                                   setValue(val)
-                                 }}
-                               />
-                             </div>,
-                             onConfirm: handleSignUp,
-                           })
-                         }>
-            {type === 0 ? "报名截止" : (type === 1 ? "报名" : "已报名")}
+                         disabled={!afterNow(items?.sign_up_end_time)}
+                         onClick={() => {
+                           setVisible(true)
+                           // Modal.show({
+                           //   getContainer: father.current,
+                           //   content: (<div className="content">
+                           //     <Form onFinish={handleSignUp}
+                           //           footer={
+                           //             <Button block type="submit" color="primary" loading={loading}>
+                           //               确认
+                           //             </Button>
+                           //           }
+                           //     >
+                           //       <Form.Item rules={[{required: true, message: '活动码不能为空'},]}
+                           //                  name="code">
+                           //         <Input placeholder='请输入活动码'/>
+                           //       </Form.Item>
+                           //     </Form>
+                           //   </div>),
+                           //   showCloseButton: true,
+                           // })
+                         }}>
+            {afterNow(items?.sign_up_end_time) ? "报名" : "报名截止"}
           </Button>}
           style={{borderRadius: '16px'}}
         >
           <div className="content">
             {/*{items.content}*/}
             <Descriptions title={
-              <Tag color='primary'>文化类型</Tag>
+              <Tag color='primary'>{items.category_name}</Tag>
             }>
               <Descriptions.Item label="活动地点">{items.activity_place}</Descriptions.Item>
               <Descriptions.Item
@@ -133,7 +140,7 @@ const ActivityDetail: React.FC = () => {
           {/*<div className="footer" onClick={e => e.stopPropagation()}>*/}
           {/*</div>*/}
         </Card>
-        {type === 0 && <Table dataSource={items1} columns={columns} pagination={false}/>}
+        {items1 && items1.length > 0 && <Table dataSource={items1} columns={columns} pagination={false}/>}
       </Auth>;
     </EmptyBox>
   )
