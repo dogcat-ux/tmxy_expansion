@@ -24,14 +24,16 @@ jobs:
 
     - name: Build
       run: |
-        yarn add
-        yarn build
+        node -v
+        npm config set registry https://registry.npmmirror.com/
+        npm install
+        npm run build
 
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
       env:
           SSH_PRIVATE_KEY: ${{ secrets.KEY }}
-          SOURCE: "dist/"
+          SOURCE: "build/"
           TARGET: "/usr/local/nginx/html"
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USER }}
