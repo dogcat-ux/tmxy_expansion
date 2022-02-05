@@ -48,6 +48,7 @@ request.interceptors.response.use(
   },
   //接口错误状态处理，也就是说无响应时的处理
   error => {
+    hideLoading();
     const codeMaps: Record<string, { msg: string; url?: string }> = {
       '401': {
         msg: '缓存过期，请重新登录',
@@ -64,7 +65,6 @@ request.interceptors.response.use(
       },
     };
     try {
-      console.log(13213)
       const {msg, url} = codeMaps[error.response.status];
       url && window.history.pushState(null, '', url);
       Toast.show({

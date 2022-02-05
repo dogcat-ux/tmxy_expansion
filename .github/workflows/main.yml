@@ -15,25 +15,25 @@ jobs:
         node-version: [16.x]
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Build
-      run: |
-        node -v
-        npm config set registry https://registry.npmmirror.com/
-        npm install
-        npm run build
+      - name: Build
+        run: |
+          node -v
+          npm config set registry https://registry.npmmirror.com/
+          npm install
+          npm run build
 
-    - name: Deploy to Server
-      uses: easingthemes/ssh-deploy@main
-      env:
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.KEY }}
-          SOURCE: "build/"
+          SOURCE: "dist/"
           TARGET: "/usr/local/nginx/html"
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USER }}
