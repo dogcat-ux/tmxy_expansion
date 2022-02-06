@@ -33,7 +33,7 @@ import {removeProperty} from "../utils/dataAmend";
 import _ from "lodash";
 import feedBack from "../utils/apiFeedback";
 import {Code} from "../constant";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const {Text, Link} = Typography;
 const {Search} = Input;
@@ -57,6 +57,7 @@ const ActivityApply: React.FC = () => {
   const [isSign, setIsSign] = useState<boolean>(false)
   const anchors = [200, window.innerHeight * 0.4, window.innerHeight * 0.8]
   const ref = useRef(null);
+  const location =useLocation()
   const getLocation = async () => {
     // @ts-ignore
     const {content, status} = await userLocation()

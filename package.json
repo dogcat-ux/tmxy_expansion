@@ -39,6 +39,7 @@
     "jest": "^27.4.3",
     "jest-resolve": "^27.4.2",
     "jest-watch-typeahead": "^1.0.0",
+    "jsonp": "^0.2.1",
     "lib-flexible": "^0.3.2",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.5.3",
@@ -74,6 +75,7 @@
     "web-vitals": "^2.1.4",
     "webpack-dev-server": "^4.7.4",
     "webpack-manifest-plugin": "^4.0.2",
+    "weixin-js-sdk": "^1.6.0",
     "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
@@ -81,6 +83,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@types/bmapgl": "0.0.5",
+    "@types/jsonp": "^0.2.1",
     "@types/lodash": "^4.14.178",
     "@types/react": "^17.0.39",
     "babel-loader": "^8.2.3",

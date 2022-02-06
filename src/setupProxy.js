@@ -1,17 +1,17 @@
 const {createProxyMiddleware} = require('http-proxy-middleware');
 
 module.exports = function (app) {
-  app.use(
-      '/apc',
-      createProxyMiddleware({
-        //  "proxy": "http://139.9.196.99:3000/",
-        target: 'https://api.map.baidu.com/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/apc': '',
-        }
-      })
-  );
+  // app.use(
+  //     '/apc',
+  //     createProxyMiddleware({
+  //       //  "proxy": "http://139.9.196.99:3000/",
+  //       target: 'https://api.map.baidu.com/',
+  //       changeOrigin: true,
+  //       pathRewrite: {
+  //         '^/apc': '',
+  //       }
+  //     })
+  // );
   app.use(
       '/api',
       createProxyMiddleware({
