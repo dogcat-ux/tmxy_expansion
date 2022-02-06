@@ -25,9 +25,10 @@ jobs:
       - name: Build
         run: |
           node -v
-          npm config set registry https://registry.npmmirror.com/
-          npm install
-          npm run build
+          npm install -g yarn
+          yarn install
+          yarn add
+          yarn build
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
