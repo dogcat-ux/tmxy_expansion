@@ -78,6 +78,9 @@
     "weixin-js-sdk": "^1.6.0",
     "workbox-webpack-plugin": "^6.4.1"
   },
+  "peerDependencies": {
+    "postcss": "^8.0.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
