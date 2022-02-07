@@ -26,44 +26,25 @@ export async function wxConfig(body: { url: string }, options?: { [key: string]:
 }
 
 export async function userLocation(body?: { url: string }, options?: { [key: string]: any }) {
-  if(localStorage.getItem('signature')){
-    const app_id=window.localStorage.getItem('app_id')
-    const timestamp=window.localStorage.getItem('timestamp')
-    const nonce_str=window.localStorage.getItem('nonce_str')
-    const signature=window.localStorage.getItem('signature')
-    wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: app_id || APP_ID, // 必填，公众号的唯一标识
-      timestamp: Number(timestamp), // 必填，生成签名的时间戳
-      nonceStr: nonce_str, // 必填，生成签名的随机串
-      signature: signature,// 必填，签名
-      jsApiList: ["getLocation"] // 必填，需要使用的JS接口列表
-    });
-  }else{
-    const res = await wxConfig({url: window.location.href});
-    const {app_id, nonce_str, timestamp, signature} = res?.data
-    window.localStorage.setItem("app_id",app_id)
-    window.localStorage.setItem("timestamp",timestamp.toString())
-    window.localStorage.setItem("nonce_str",nonce_str)
-    window.localStorage.setItem("signature",signature)
-    wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: app_id || APP_ID, // 必填，公众号的唯一标识
-      timestamp: timestamp, // 必填，生成签名的时间戳
-      nonceStr: nonce_str, // 必填，生成签名的随机串
-      signature: signature,// 必填，签名
-      jsApiList: ["getLocation"] // 必填，需要使用的JS接口列表
-    });
-  }
+  const res = await wxConfig({url: window.location.href});
+  const {app_id, nonce_str, timestamp, signature} = res?.data
+  wx.config({
+    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: app_id || APP_ID, // 必填，公众号的唯一标识
+    timestamp: timestamp, // 必填，生成签名的时间戳
+    nonceStr: nonce_str, // 必填，生成签名的随机串
+    signature: signature,// 必填，签名
+    jsApiList: ["checkJsApi","getLocation"] // 必填，需要使用的JS接口列表
+  });
   wx.checkJsApi({
     jsApiList: ['getLocation'],
-    success: function (res:any) {
+    success: function (res: any) {
       if (res.checkResult.getLocation == false) {
         Toast.show('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
         return;
       }
     },
-    fail: function (res:any) {
+    fail: function (res: any) {
       console.info('checkJsApi fail=' + JSON.stringify(res))
     }
   });
@@ -78,13 +59,14 @@ export async function userLocation(body?: { url: string }, options?: { [key: str
         var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
         var speed = res.speed; // 速度，以米/每秒计
         var accuracy = res.accuracy; // 位置精度
+        Toast.show('res')
         return res;
       },
-      cancel: function (res:any) {
+      cancel: function (res: any) {
         Toast.show('查看附件机器，首先要授权位置信息')
       },
-      fail:(error:any)=>{
-        console.log("error",error)
+      fail: (error: any) => {
+        console.log("error", error)
         console.info('ready getLocation fail=' + JSON.stringify(error))
         Toast.show('出现故障，请联系管理员')
       }

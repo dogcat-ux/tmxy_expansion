@@ -27,7 +27,6 @@ jobs:
           node -v
           npm install -g yarn
           yarn install
-          yarn add
           yarn build
 
       - name: Deploy to Server

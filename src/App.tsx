@@ -20,27 +20,29 @@ function App() {
   return (
     //默认入口
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/home" element={<Home/>}/>
-        <Route path="/404" element={<NoFoundPage/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/middle" element={<Middle/>}/>
-        <Route path="/SignUpOut/:type" element={<SignUpOut/>}/>
-        <Route path="/ActivityApply" element={<ActivityApply/>}/>
-        <Route path="/ActivityDetail/:id" element={<ActivityDetail/>}/>
+      {/*<Routes>*/}
+      {/*/!*<BrowserRouter >*!/*/}
+      {/*  <Route path="/" element={<Home/>}/>*/}
+      {/*  <Route path="/home" element={<Home/>}/>*/}
+      {/*  <Route path="/404" element={<NoFoundPage/>}/>*/}
+      {/*  <Route path="/login" element={<Login/>}/>*/}
+      {/*  <Route path="/middle" element={<Middle/>}/>*/}
+      {/*  <Route path="/SignUpOut/:type" element={<SignUpOut/>}/>*/}
+      {/*  <Route path="/ActivityApply" element={<ActivityApply/>}/>*/}
+      {/*  <Route path="/ActivityDetail/:id" element={<ActivityDetail/>}/>*/}
 
-        <Route path="/AnnList" element={<AnnList/>}/>
-        <Route path="/AnnDetail/:id" element={<AnnDetail/>}/>
+      {/*  <Route path="/AnnList" element={<AnnList/>}/>*/}
+      {/*  <Route path="/AnnDetail/:id" element={<AnnDetail/>}/>*/}
 
-        <Route path="/UserCenter" element={<UserCenter/>}/>
-        <Route path="/UserCenter/AppliedActivity" element={<AppliedActivity/>}/>
-        <Route path="/UserCenter/CumulativeScore" element={<CumulativeScore/>}/>
-        <Route path="/UserCenter/AttendedActivity" element={<AttendedActivity/>}/>
-        <Route path="/UserCenter/Rank" element={<Rank/>}/>
-        <Route path="/UserCenter/UserInfo" element={<UserInfo/>}/>
-        <Route path="*" element={<NoFoundPage/>}/>
-      </Routes>
+      {/*  <Route path="/UserCenter" element={<UserCenter/>}/>*/}
+      {/*  <Route path="/UserCenter/AppliedActivity" element={<AppliedActivity/>}/>*/}
+      {/*  <Route path="/UserCenter/CumulativeScore" element={<CumulativeScore/>}/>*/}
+      {/*  <Route path="/UserCenter/AttendedActivity" element={<AttendedActivity/>}/>*/}
+      {/*  <Route path="/UserCenter/Rank" element={<Rank/>}/>*/}
+      {/*  <Route path="/UserCenter/UserInfo" element={<UserInfo/>}/>*/}
+      {/*  <Route path="*" element={<NoFoundPage/>}/>*/}
+      {/*/!*</Routes>*!/*/}
+      {/*</Routes>*/}
     </div>
   );
 }
