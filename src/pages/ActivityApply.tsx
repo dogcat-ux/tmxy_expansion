@@ -57,19 +57,16 @@ const ActivityApply: React.FC = () => {
   const [isSign, setIsSign] = useState<boolean>(false)
   const anchors = [200, window.innerHeight * 0.4, window.innerHeight * 0.8]
   const ref = useRef(null);
-  const location =useLocation()
+  const location = useLocation()
   const getLocation = async () => {
-    // @ts-ignore
-    const {content, status} = await userLocation()
-    if (status === 0) {
-      const {x, y} = content.point;
-      setLng(Number(x));
-      setLat(Number(y));
-      setLists([content?.address_detail])
-    }
+    await userLocation();
+    const longitude = Number(window.localStorage.getItem("longitude"));
+    const latitude = Number(window.localStorage.getItem("latitude"));
+    console.log("申请页面的latitude，longitude",latitude,longitude)
+    setLng(longitude);
+    setLat(latitude);
   }
   const onFinish = async (values: any) => {
-    console.log("values", values)
     let v = _.cloneDeep(values)
     v = removeProperty("sign_up_time")(v)
     v = removeProperty("activity_time")(v)
@@ -152,10 +149,10 @@ const ActivityApply: React.FC = () => {
     setLat(e?.latlng?.lat.toFixed(6))
     const myGeo = new BMapGL.Geocoder();
     myGeo.getLocation(new BMapGL.Point(lng, lat), function (result) {
-      console.log("result", result)
-      console.log("result", result?.surroundingPoi)
-      // @ts-ignore
-      console.log("result", result?.surroundingPois)
+      // console.log("result", result)
+      // console.log("result", result?.surroundingPoi)
+      // // @ts-ignore
+      // console.log("result", result?.surroundingPois)
       // @ts-ignore
       setLists(result?.surroundingPoi || result?.surroundingPois);
       // setLists(e?.currentTarget?._spotDataOnCanvas);
@@ -185,7 +182,6 @@ const ActivityApply: React.FC = () => {
     setIsSign(false);
     const myGeo = new BMapGL.Geocoder();
     myGeo.getLocation(new BMapGL.Point(lng, lat), function (result) {
-      console.log("result", result)
       // @ts-ignore
       setPosition(result?.address);
     })

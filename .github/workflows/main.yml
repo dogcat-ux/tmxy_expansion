@@ -27,7 +27,7 @@ jobs:
           node -v
           npm install -g yarn
           yarn install
-          yarn build
+          npm run build
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main

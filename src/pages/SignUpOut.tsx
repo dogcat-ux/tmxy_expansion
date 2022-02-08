@@ -19,13 +19,12 @@ const SignUpOut = () => {
   // const [targetLat, setTargetLat] = useState<number>(26.064609)
   const {type} = useParams();
   const getLocation = async () => {
-    // @ts-ignore
-    const {content, status} = await userLocation()
-    if (status === 0) {
-      const {x, y} = content.point;
-      setLng(Number(x));
-      setLat(Number(y));
-    }
+    await userLocation();
+    const longitude = Number(window.localStorage.getItem("longitude"));
+    const latitude = Number(window.localStorage.getItem("latitude"));
+    setLng(longitude);
+    setLat(latitude);
+    console.log("签到签退页面的latitude，longitude",latitude,longitude)
   }
   useEffect(() => {
     getLocation();
