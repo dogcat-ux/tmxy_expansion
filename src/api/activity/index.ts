@@ -44,6 +44,14 @@ export async function activityApply(id?:string,body?:{code:string}, options?: { 
   });
 }
 
+export async function activityStatus(id?:string, options?: { [p: string]: any }) {
+// @ts-ignore
+  return request<API.activityRes>(`api/v3/activity-status/${id}`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 export async function sign(body?:API.signParam, options?: { [p: string]: any }) {
   let params = new FormData();
   _.forIn(body, function (value, key) {

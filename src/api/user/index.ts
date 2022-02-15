@@ -135,18 +135,11 @@ export async function activityApplied(options?: { [key: string]: any }) {
 }
 
 export async function semesterList(
-  body: API.SemesterListParam,
-  options?: { [key: string]: any },
-) {
-  let params = new FormData();
-  _.forIn(body, function (value, key) {
-    // @ts-ignore
-    return params.append(key, value);
-  })
+  body?: API.SemesterListParam, options?: { [key: string]: any },) {
   // @ts-ignore
   return request<API.SemesterListRes>('/api/v3/activity-semester', {
     method: 'GET',
-    data: params,
+    params: body,
     ...(options || {}),
   });
 }

@@ -4,38 +4,35 @@ import {
   AutoCenter,
   Button,
   CheckList,
-  DatePicker,
-  Dropdown, FloatingPanel,
+  DatePicker, Dialog,
+  FloatingPanel,
   Form,
   Image,
-  Modal,
-  Radio, SearchBar,
   Space,
   Toast
 } from "antd-mobile";
-import {Input, InputNumber, Select, Upload} from "antd";
-import {activityApplied} from "../api/user";
-import {AntOutline, LocationFill} from 'antd-mobile-icons'
+import {Input, Select, Upload} from "antd";
+import {LocationFill} from 'antd-mobile-icons'
 import {category} from "../api/category";
-import {afterNow, dateChange, dateChangeCommon, dateChangeDay, isTime1BeforeTime2, toTimeStamp} from "../utils/account";
-import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
+import {afterNow, dateChangeCommon, isTime1BeforeTime2, toTimeStamp} from "../utils/account";
+import {PlusOutlined} from '@ant-design/icons';
 import "../assets/styles/ActivityApply.scss"
 import Map from 'react-bmapgl/Map'
 import Marker from 'react-bmapgl/Overlay/Marker'
 import AutoComplete from 'react-bmapgl/Services/AutoComplete'
-import {Circle, InfoWindow, ScaleControl, ZoomControl} from "react-bmapgl";
-import {Action} from "antd-mobile/es/components/modal";
-import {userLocation} from "../api/baidu";
+import {ScaleControl, ZoomControl} from "react-bmapgl";
 import {Typography} from 'antd';
-import ImgCrop from 'antd-img-crop';
 import {activityCreat} from "../api/activity";
 import {removeProperty} from "../utils/dataAmend";
 import _ from "lodash";
 import feedBack from "../utils/apiFeedback";
-import {Code} from "../constant";
 import {useLocation, useNavigate} from "react-router-dom";
+// @ts-ignore
+import wx from 'weixin-js-sdk'
+import {toWxConfig, wxConfig} from "../api/baidu";
+import {APP_ID} from "../constant";
 
-const {Text, Link} = Typography;
+const {Text} = Typography;
 const {Search} = Input;
 const {Option} = Select;
 const {TextArea} = Input;
@@ -59,12 +56,66 @@ const ActivityApply: React.FC = () => {
   const ref = useRef(null);
   const location = useLocation()
   const getLocation = async () => {
-    await userLocation();
-    const longitude = Number(window.localStorage.getItem("longitude"));
-    const latitude = Number(window.localStorage.getItem("latitude"));
-    console.log("申请页面的latitude，longitude",latitude,longitude)
-    setLng(longitude);
-    setLat(latitude);
+    let u = navigator.userAgent;
+    let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    let androidUrl=decodeURIComponent(document.URL.split("#")[0]);
+    let pathname=window.location.pathname;
+    let iosUrl=androidUrl.replace(pathname,'/');
+    let url=isIOS?iosUrl:androidUrl;
+    const res = await wxConfig({url: url});
+    const {app_id, nonce_str, timestamp, signature} = res?.data
+    wx.config({
+      beta: true, // 必须这么写，否则wx.invoke调用形式的jsapi会有问题
+      appId: app_id, // 必填，公众号的唯一标识
+      timestamp: timestamp, // 必填，生成签名的时间戳
+      nonceStr: nonce_str, // 必填，生成签名的随机串
+      signature: signature,// 必填，签名
+      jsApiList: ["checkJsApi", "getLocation"], // 必填，需要使用的JS接口列表
+    });
+    wx.checkJsApi({
+      jsApiList: ['getLocation'],
+      success: function (res: any) {
+        if (res.checkResult.getLocation == false) {
+          Toast.show('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+          return;
+        }
+      },
+      fail: function (res: any) {
+        console.log('checkJsApi fail=' + JSON.stringify(res))
+      }
+    });
+    wx.error(function (res: any) {
+      // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+      // Toast.show("微信接口信息验证失败")
+      Dialog.confirm({content:"微信接口信息验证失败,请联系管理员"})
+    });
+    wx.ready(function () {
+      wx.getLocation({
+        type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        isHighAccuracy: true, // 高精度定位，会调用gps获取高精度坐标
+        success: function (res: any) {
+          const {latitude, longitude} = res;
+          setLng(longitude);
+          setLat(latitude);
+          // Dialog.confirm({
+          //   content: ":获得location成功:" + JSON.stringify(res)
+          // })
+          return res;
+        },
+        cancel: function (res: any) {
+          // Toast.show('请先授权位置信息')
+          Dialog.confirm({
+            content: "请先授权位置信息！"
+          })
+        },
+        fail: (error: any) => {
+          // Toast.show('出现故障，请联系管理员')
+          Dialog.confirm({
+            content: "请开启微信获得定位的权限！"
+          })
+        }
+      })
+    });
   }
   const onFinish = async (values: any) => {
     let v = _.cloneDeep(values)
@@ -72,24 +123,28 @@ const ActivityApply: React.FC = () => {
     v = removeProperty("activity_time")(v)
     v = removeProperty("sign_in_place")(v)
     v = removeProperty("image")(v)
-    if (date1 && date2 && date3 && date4) {
-      const res = await activityCreat({
-        ...v,
-        image: values?.image?.file,
-        sign_in_place: position,
-        sign_up_start_time: toTimeStamp(date1),
-        sign_up_end_time: toTimeStamp(date2),
-        activity_start_time: toTimeStamp(date3),
-        activity_end_time: toTimeStamp(date4),
-        activity_place_longitude: lng,
-        activity_place_latitude: lat,
-      });
-      if (feedBack(res, "创建成功并提交审核", "创建失败")) {
-        navigate("/home");
+    var convertor = new BMapGL.Convertor();
+    convertor.translate([new BMapGL.Point(lng,lat)], 5, 3, (data)=>{
+      if (date1 && date2 && date3 && date4) {
+         activityCreat({
+          ...v,
+          image: values?.image?.file,
+          sign_in_place: position,
+          sign_up_start_time: toTimeStamp(date1),
+          sign_up_end_time: toTimeStamp(date2),
+          activity_start_time: toTimeStamp(date3),
+          activity_end_time: toTimeStamp(date4),
+          activity_place_longitude: data.points[0].lng,
+          activity_place_latitude: data.points[0].lat,
+        }).then(res=>{
+           if (feedBack(res, "创建成功并提交审核", "创建失败")) {
+             navigate("/home");
+           }
+         });
+      } else {
+        Toast.show("请选择日期");
       }
-    } else {
-      Toast.show("请选择日期");
-    }
+    })
   }
   const sendApi = async (key?: number) => {
     const {data: {item}} = await category()

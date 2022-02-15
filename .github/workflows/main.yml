@@ -27,6 +27,8 @@ jobs:
           node -v
           npm install -g yarn
           yarn install
+          node -v
+          npm config set registry https://registry.npmmirror.com/
           npm run build
 
       - name: Deploy to Server

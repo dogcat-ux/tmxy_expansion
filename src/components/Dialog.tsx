@@ -24,11 +24,6 @@ const Dialog = (props: any) => {
           <Button  color="primary" className="com-dialog-item" onClick={()=>{navigate(`/SignUpOut/0`)}}>签到</Button>
           <Button  color="primary" className="com-dialog-item" onClick={()=>{navigate(`/SignUpOut/1`)}}>签退</Button>
         </Space>
-        {/*<CapsuleTabs>*/}
-        {/*  <CapsuleTabs.Tab title='水果' key='fruits'/>*/}
-        {/*  <CapsuleTabs.Tab title='蔬菜' key='vegetables'/>*/}
-        {/*  <CapsuleTabs.Tab title='动物' key='animals'/>*/}
-        {/*</CapsuleTabs>*/}
       </div>
     </div>,
     node

@@ -106,9 +106,9 @@ declare namespace API {
   type allScoreResPost = {
     status?: number
     data?: {
-      activity: allScoreResPostItem,
-      extra_add: allScoreResPostItem,
-      extra_deduction: allScoreResPostItem,
+      activity: allScoreResPostItem[],
+      extra_add: allScoreResPostItem[],
+      extra_deduction: allScoreResPostItem[],
     }
     error?: string
     msg?: string
@@ -130,8 +130,11 @@ declare namespace API {
     year: string | number; //学年
   };
   type SemesterListResItem = {
-    stu_number?: string;
-    semester_name?: string;
+    semester: number,
+    semester_start_time: number,
+    semester_end_time: number
+    // stu_number?: string;
+    // semester_name?: string;
   };
   type SemesterListRes = {
     status?: number;

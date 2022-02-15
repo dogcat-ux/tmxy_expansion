@@ -7,7 +7,7 @@ import {AntOutline} from 'antd-mobile-icons'
 import {afterNow, dateChange} from "../utils/account";
 import {Descriptions, Space, Table, Typography} from "antd";
 import "../assets/styles/components/ActivityDetail.scss"
-import {activityApply, activityPublicity} from "../api/activity";
+import {activityApply, activityPublicity, activityStatus} from "../api/activity";
 import {Code} from "../constant";
 import feedBack from "../utils/apiFeedback";
 
@@ -38,6 +38,7 @@ const ActivityDetail: React.FC = () => {
   const father = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false)
   const [items1, setItems1] = useState<API.activityPublicityResItem[]>();//公示
+  const [type, setType] = useState<string>("报名");//0过期 1正常 2已经报名
   const handleSignUp = async (data: { code: string }) => {
     setLoading(true)
     const res = await activityApply(id, {...data})
@@ -45,13 +46,22 @@ const ActivityDetail: React.FC = () => {
     if (feedBack(res, "报名成功", "报名失败")) setVisible(false);
   }
   const send = async () => {
+    const {status} = await activityStatus(id)
+    if(status === Code.ActivityExpired){
+      setType("活动过期");
+    }else if(status === Code.hasIn){
+      setType("已报名");
+    }else if(status===Code.SignUpExpired){
+      setType("报名截止");
+    }else{
+      setType("报名");
+    }
     const res = await activityPublicity(id)
     if (res?.status === Code.SuccessCode) {
       setItems1(res?.data?.item);
     }
   }
   useEffect(() => {
-    console.log("state", state)
     send()
   }, [])
   // @ts-ignore
@@ -92,29 +102,10 @@ const ActivityDetail: React.FC = () => {
           }
           extra={<Button color="primary"
                          shape="rounded"
-                         disabled={!afterNow(items?.sign_up_end_time)}
+                         disabled={type!=="报名"}
                          onClick={() => {
-                           setVisible(true)
-                           // Modal.show({
-                           //   getContainer: father.current,
-                           //   content: (<div className="content">
-                           //     <Form onFinish={handleSignUp}
-                           //           footer={
-                           //             <Button block type="submit" color="primary" loading={loading}>
-                           //               确认
-                           //             </Button>
-                           //           }
-                           //     >
-                           //       <Form.Item rules={[{required: true, message: '活动码不能为空'},]}
-                           //                  name="code">
-                           //         <Input placeholder='请输入活动码'/>
-                           //       </Form.Item>
-                           //     </Form>
-                           //   </div>),
-                           //   showCloseButton: true,
-                           // })
-                         }}>
-            {afterNow(items?.sign_up_end_time) ? "报名" : "报名截止"}
+                           setVisible(true)}}>
+            {type}
           </Button>}
           style={{borderRadius: '16px'}}
         >

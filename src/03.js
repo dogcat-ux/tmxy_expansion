@@ -96,9 +96,5 @@
 // //     }
 // //     )
 // // )
-//
-let map=new Map()
-map.set({
-  name:"1321"
-},"lisa")
-console.log(map)
+let pathname="/SignOut/0"
+console.log("http://www.dogcatux.com/SignOut/0".replace(pathname,''))

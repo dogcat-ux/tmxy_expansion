@@ -3,7 +3,7 @@ import {Link, Navigate, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../store";
 import Auth from "../components/auth";
-import {Swiper, Image, List, Empty, InfiniteScroll} from "antd-mobile";
+import {Swiper, Image, List, Empty, InfiniteScroll, Dialog, Toast} from "antd-mobile";
 import "../assets/styles/home.scss"
 import {Col, Row} from "antd";
 import {Tabs} from 'antd-mobile'
@@ -15,7 +15,10 @@ import {carousels} from "../api/slideshow";
 import EmptyBox from "../components/emptyBox";
 import ActivityItem from "../components/activityItem";
 import {category} from "../api/category";
-import {PAGE1, PAGE_SIZE} from "../constant";
+import {APP_ID, PAGE1, PAGE_SIZE} from "../constant";
+import {wxConfig} from "../api/baidu";
+// @ts-ignore
+import wx from 'weixin-js-sdk'
 
 const Carousels: React.FC = () => {
   const [items, setItems] = useState<API.carouselsResItem[]>();
@@ -26,7 +29,7 @@ const Carousels: React.FC = () => {
     setTotal(total);
   }
   useEffect(() => {
-    swiper()
+    swiper();
   }, [])
   return (
     <Swiper autoplay loop>

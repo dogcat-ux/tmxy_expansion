@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import Auth from "../components/auth";
 import ProfileHeader from "../components/profileHeader";
-import {Form, Grid, Input, List, Modal, TabBar, Toast} from "antd-mobile";
+import {Form, Input, List, Modal, TabBar, Toast} from "antd-mobile";
 import {
   EditSOutline,
-  FillinOutline,
   UserAddOutline,
   PieOutline,
   HistogramOutline,
@@ -13,8 +12,8 @@ import {
 } from "antd-mobile-icons";
 import Button from "antd-mobile/es/components/button";
 import {useNavigate} from "react-router-dom";
-import {activityAppliedNumber, allScore, allScorePost, amendPassword, personRankNumber, yearList} from "../api/user";
-import {useDispatch, useSelector} from "react-redux";
+import {activityAppliedNumber, allScore, amendPassword, personRankNumber, yearList} from "../api/user";
+import {useDispatch} from "react-redux";
 import {logout} from "../store/user";
 import {Code} from "../constant";
 import "../assets/styles/userCenter.scss"
@@ -75,17 +74,11 @@ const UserCenter: React.FC = () => {
         </div>}/>
       <TabBar.Item key="个人排名" title={
         <div className="user_center_info">
-          <div>{rankNumber}名</div>
+          <div>{isNaN(rankNumber)?rankNumber+"名":"暂无数据"}</div>
           <div>个人排名</div>
         </div>}/>
     </TabBar>
     <List>
-      {/*<List.Item arrow={false} onClick={() => {*/}
-      {/*  navigator("/UserCenter/UserInfo")*/}
-      {/*}}>*/}
-      {/*  <FillinOutline color="var(--adm-color-primary)" className="theme-pad"/>*/}
-      {/*  修改个人信息*/}
-      {/*</List.Item>*/}
       <List.Item arrow={false} onClick={() => {
         navigator("/UserCenter/AppliedActivity")
       }}>
