@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Popover, TabBar} from 'antd-mobile';
+import {TabBar} from 'antd-mobile';
 import "../assets/styles/components/layout.scss"
 import {
   AppOutline,
@@ -9,19 +9,13 @@ import {
 import {useSelector} from "react-redux";
 import {RootState} from "../store";
 import {useLocation, useNavigate} from "react-router-dom";
-import {createPortal} from "react-dom";
 import Dialog from "./Dialog";
 
 const MyTabBar: React.FC = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user);
   const [isShowDialog, setIsShowDialog] = useState(false);
-  // const history = useHistory()
   const location = useLocation()
   const { pathname } = location
-  // const toggleDialog = () => {
-  //   setIsShowDialog(prev => !prev.isShowDialog);
-  // }
   const closeDialog = () => {
     setIsShowDialog(false);
   }
@@ -49,19 +43,19 @@ const MyTabBar: React.FC = () => {
       icon: <UserContactOutline/>,
     },
   ];
-  const [activeKey, setActiveKey] = useState('home');
-  const handleChange = (key: string) => {
-    setActiveKey(key);
-    key !== "ActivityApply" && navigate(`/${key}`);
-    if(key === "ActivityApply"){
-      setIsShowDialog(!isShowDialog);
-    }
-  };
+  // const [activeKey, setActiveKey] = useState('home');
+  // const handleChange = (key: string) => {
+  //   setActiveKey(key);
+  //   key !== "ActivityApply" && navigate(`/${key}`);
+  //   if(key === "ActivityApply"){
+  //     setIsShowDialog(!isShowDialog);
+  //   }
+  // };
   const setRouteActive = (key: string) => {
     if(key === "/ActivityApply"){
       setIsShowDialog(!isShowDialog);
     }else{
-      navigate(`${key}`)
+      navigate(`${key}`);
     }
   }
   useEffect(()=>{

@@ -74,7 +74,7 @@ const UserCenter: React.FC = () => {
         </div>}/>
       <TabBar.Item key="个人排名" title={
         <div className="user_center_info">
-          <div>{isNaN(rankNumber)?rankNumber+"名":"暂无数据"}</div>
+          <div>{rankNumber}名</div>
           <div>个人排名</div>
         </div>}/>
     </TabBar>

@@ -4,7 +4,7 @@ import {useLocation, useParams} from "react-router-dom";
 import EmptyBox from "../components/emptyBox";
 import {Card, Button, Image, Input, Tag, Modal, Form} from 'antd-mobile'
 import {AntOutline} from 'antd-mobile-icons'
-import {afterNow, dateChange} from "../utils/account";
+import {dateChange} from "../utils/account";
 import {Descriptions, Space, Table, Typography} from "antd";
 import "../assets/styles/components/ActivityDetail.scss"
 import {activityApply, activityPublicity, activityStatus} from "../api/activity";

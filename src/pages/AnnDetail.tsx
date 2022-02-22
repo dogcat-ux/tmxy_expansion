@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import Auth from "../components/auth";
-import {noticeApi, noticeDetail} from "../api/ann";
+import {noticeDetail} from "../api/ann";
 import {useParams} from "react-router-dom";
 import EmptyBox from "../components/emptyBox";
-import {Card, Toast, Button, AutoCenter} from 'antd-mobile'
-import {AntOutline, RightOutline} from 'antd-mobile-icons'
+import {Card} from 'antd-mobile'
+import {AntOutline} from 'antd-mobile-icons'
 import {dateChangeDay} from "../utils/account";
 import {Space, Typography} from "antd";
 
-const {Text, Title} = Typography;
+const {Title} = Typography;
 
 const AnnDetail:  React.FC = () => {
   const [items, setItems] = useState<API.noticeResItem>({});

@@ -3,22 +3,18 @@ import {Link, Navigate, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../store";
 import Auth from "../components/auth";
-import {Swiper, Image, List, Empty, InfiniteScroll, Dialog, Toast} from "antd-mobile";
+import {Swiper, Image, List, Empty, InfiniteScroll} from "antd-mobile";
 import "../assets/styles/home.scss"
 import {Col, Row} from "antd";
 import {Tabs} from 'antd-mobile'
 import {noticeApi} from "../api/ann";
-import {dateChange, dateChangeDay} from "../utils/account";
-import {activityApplied} from "../api/user";
+import {dateChangeDay} from "../utils/account";
 import {activityList} from "../api/activity";
 import {carousels} from "../api/slideshow";
 import EmptyBox from "../components/emptyBox";
 import ActivityItem from "../components/activityItem";
 import {category} from "../api/category";
-import {APP_ID, PAGE1, PAGE_SIZE} from "../constant";
-import {wxConfig} from "../api/baidu";
-// @ts-ignore
-import wx from 'weixin-js-sdk'
+import {PAGE1, PAGE_SIZE} from "../constant";
 
 const Carousels: React.FC = () => {
   const [items, setItems] = useState<API.carouselsResItem[]>();
@@ -34,10 +30,10 @@ const Carousels: React.FC = () => {
   return (
     <Swiper autoplay loop>
       {
-        total && total > 0 ? items?.map((value,index) => {
+        total && total > 0 ? items?.map((value, index) => {
           return (<Swiper.Item key={index}>
             <div className="home_content">
-              <Image src={value?.img_path || ''}  width={375} height={200} fit='cover' className="img"/>
+              <Image src={value?.img_path || ''} width={375} height={200} fit='cover' className="img"/>
             </div>
           </Swiper.Item>)
         }) : <Swiper.Item className="home_content">
@@ -105,15 +101,16 @@ const Activity = () => {
     })
     setItems(list?.data?.item);
   }
+
   async function loadMore() {
-    setPage(page+1);
+    setPage(page + 1);
     const list = await activityList({
-      category_name: now||categorys[0]?.category_name,
+      category_name: now || categorys[0]?.category_name,
       page_num: page,
       page_size: PAGE_SIZE
     })
-    setHasMore(list?.data?.item&&list?.data?.item?.length > 0)
-    list?.data?.item&&setItems([...items,...list?.data?.item]);
+    setHasMore(list?.data?.item && list?.data?.item?.length > 0)
+    list?.data?.item && setItems([...items, ...list?.data?.item]);
   }
 
   useEffect(() => {
@@ -123,23 +120,20 @@ const Activity = () => {
   // }, [])
   return (
     <EmptyBox isEmpty={!categorys || categorys.length < 0}>
-      {/*<Tabs defaultActiveKey={categorys[0]?.category_name} onChange={onChange}>*/}
       <Tabs defaultActiveKey="0" onChange={onChange}>
-      {/*<Tabs onChange={onChange}>*/}
-        {categorys?.map((value,index) => {
-          // return <Tabs.Tab title={value.category_name} key={value.category_name}>
+        {categorys?.map((value, index) => {
           return <Tabs.Tab title={value.category_name} key={index}>
             <EmptyBox isEmpty={!items || items.length < 0}>
               {
                 items?.map((value, index) => {
-                    return (
-                      <div key={index}>
-                        <ActivityItem value={value}/>
-                      </div>
-                    )
-                  })
+                  return (
+                    <div key={index}>
+                      <ActivityItem value={value}/>
+                    </div>
+                  )
+                })
               }
-              <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+              <InfiniteScroll loadMore={loadMore} hasMore={hasMore}/>
             </EmptyBox>
           </Tabs.Tab>
         })}

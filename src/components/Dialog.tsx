@@ -21,8 +21,18 @@ const Dialog = (props: any) => {
         <Space>
           {/*0 是签到  1是签退*/}
           <Button  color="primary" className="com-dialog-item" onClick={()=>{navigate('/ActivityApply')}} >申请</Button>
-          <Button  color="primary" className="com-dialog-item" onClick={()=>{navigate(`/SignUpOut/0`)}}>签到</Button>
-          <Button  color="primary" className="com-dialog-item" onClick={()=>{navigate(`/SignUpOut/1`)}}>签退</Button>
+          <Button  color="primary" className="com-dialog-item" onClick={()=>{
+            if(window.location.pathname==="/SignUpOut/0"){
+              window.location.reload()
+            }
+            navigate(`/SignUpOut/0`)
+          }}>签到</Button>
+          <Button  color="primary" className="com-dialog-item" onClick={()=>{
+            if(window.location.pathname==="/SignUpOut/1"){
+              window.location.reload()
+            }
+            navigate(`/SignUpOut/1`)}
+          }>签退</Button>
         </Space>
       </div>
     </div>,

@@ -30,7 +30,6 @@ const SignUpOut = () => {
     const res = await wxConfig({url: url});
     const {app_id, nonce_str, timestamp, signature} = res?.data
     wx.config({
-      debug:true,
       beta: true, // 必须这么写，否则wx.invoke调用形式的jsapi会有问题
       appId: app_id, // 必填，公众号的唯一标识
       timestamp: timestamp, // 必填，生成签名的时间戳
@@ -86,8 +85,8 @@ const SignUpOut = () => {
   }
   useEffect(() => {
     getLocation();
-    return () => {}
-  }, [])
+    setVisible(true);
+  }, [type])
   const onFinish = async (data: any) => {
     const res = await sign({
       ...data,

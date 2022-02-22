@@ -29,8 +29,7 @@ import feedBack from "../utils/apiFeedback";
 import {useLocation, useNavigate} from "react-router-dom";
 // @ts-ignore
 import wx from 'weixin-js-sdk'
-import {toWxConfig, wxConfig} from "../api/baidu";
-import {APP_ID} from "../constant";
+import {wxConfig} from "../api/baidu";
 
 const {Text} = Typography;
 const {Search} = Input;
@@ -54,7 +53,6 @@ const ActivityApply: React.FC = () => {
   const [isSign, setIsSign] = useState<boolean>(false)
   const anchors = [200, window.innerHeight * 0.4, window.innerHeight * 0.8]
   const ref = useRef(null);
-  const location = useLocation()
   const getLocation = async () => {
     let u = navigator.userAgent;
     let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -70,6 +68,7 @@ const ActivityApply: React.FC = () => {
       timestamp: timestamp, // 必填，生成签名的时间戳
       nonceStr: nonce_str, // 必填，生成签名的随机串
       signature: signature,// 必填，签名
+      // jsApiList: ["checkJsApi", "getLocation","openLocation"], // 必填，需要使用的JS接口列表
       jsApiList: ["checkJsApi", "getLocation"], // 必填，需要使用的JS接口列表
     });
     wx.checkJsApi({
@@ -91,15 +90,15 @@ const ActivityApply: React.FC = () => {
     });
     wx.ready(function () {
       wx.getLocation({
-        type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
         isHighAccuracy: true, // 高精度定位，会调用gps获取高精度坐标
+        type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
         success: function (res: any) {
           const {latitude, longitude} = res;
-          setLng(longitude);
-          setLat(latitude);
-          // Dialog.confirm({
-          //   content: ":获得location成功:" + JSON.stringify(res)
-          // })
+          var convertor = new BMapGL.Convertor();
+          convertor.translate([new BMapGL.Point(longitude,latitude)], 3, 5, (data)=>{
+            setLng(data.points[0].lng);
+            setLat(data.points[0].lat);
+          })
           return res;
         },
         cancel: function (res: any) {
