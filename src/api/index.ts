@@ -66,7 +66,8 @@ request.interceptors.response.use(
     };
     try {
       const {msg, url} = codeMaps[error.response.status];
-      url && window.history.pushState(null, '', url);
+      // url && window.history.pushState(null, '', url);
+      window.location.href=window.location.href.split("/")[0]+url
       Toast.show({
         content: `${msg}!`,
       });

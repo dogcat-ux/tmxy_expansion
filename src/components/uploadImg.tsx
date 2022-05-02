@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Upload} from "antd";
-import {Image, Space, Toast} from "antd-mobile";
+import {Image, Toast} from "antd-mobile";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
 import {changeAvatar} from "../api/user";

@@ -17,6 +17,7 @@ import {useDispatch} from "react-redux";
 import {logout} from "../store/user";
 import {Code} from "../constant";
 import "../assets/styles/userCenter.scss"
+import {isNumber} from "util";
 
 const UserCenter: React.FC = () => {
   const [score, setScore] = useState<number>(0);
@@ -29,7 +30,7 @@ const UserCenter: React.FC = () => {
     const [allScoreRes, activityAppliedNumberRes, personRankNumberRes] = await Promise.all([allScore(), activityAppliedNumber(), personRankNumber()])
     setScore(allScoreRes?.data);
     setAppliedNumber(activityAppliedNumberRes?.data);
-    setRankNumber(personRankNumberRes?.data);
+    isNaN(personRankNumberRes?.data)&&setRankNumber(personRankNumberRes?.data);
   }
   useEffect(() => {
     sendApi()
@@ -58,7 +59,6 @@ const UserCenter: React.FC = () => {
     dispatch(logout());
     navigator('/login');
   };
-
   return <Auth title={"个人中心"}>
     <ProfileHeader/>
     <TabBar activeKey={""}>
@@ -74,7 +74,7 @@ const UserCenter: React.FC = () => {
         </div>}/>
       <TabBar.Item key="个人排名" title={
         <div className="user_center_info">
-          <div>{rankNumber}名</div>
+          <div>{rankNumber===0?rankNumber:"暂无排"}名</div>
           <div>个人排名</div>
         </div>}/>
     </TabBar>

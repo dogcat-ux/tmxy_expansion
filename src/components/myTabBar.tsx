@@ -20,7 +20,6 @@ const MyTabBar: React.FC = () => {
     setIsShowDialog(false);
   }
   const onSure = () => {
-    console.log('确定...');
     setTimeout(() => {
       setIsShowDialog(false);
     }, 2000);
@@ -58,9 +57,6 @@ const MyTabBar: React.FC = () => {
       navigate(`${key}`);
     }
   }
-  useEffect(()=>{
-    console.log(pathname)
-  },[])
   return (
     <>
       <TabBar activeKey={pathname} onChange={value => setRouteActive(value)}>

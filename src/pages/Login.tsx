@@ -22,7 +22,6 @@ const LoginBody = () => {
   }) => {
     const data = await login({...values});
     if (data.status === Code.SuccessCode) {
-      console.log("data", data)
       dispatch(save({...data.data.user, token: data.data.token}));
       Toast.show({
         content: '登录成功',
