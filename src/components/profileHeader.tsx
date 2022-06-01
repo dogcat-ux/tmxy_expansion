@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import '../assets/styles/components/profileHeader.scss';
-import {Form, Image, Input, List, Modal, Space, Toast} from 'antd-mobile';
-import {EditSOutline, TextDeletionOutline} from 'antd-mobile-icons';
+import {Image,  Space, Toast} from 'antd-mobile';
 import {useDispatch, useSelector} from 'react-redux';
-import Button from 'antd-mobile/es/components/button';
 import {Upload} from 'antd';
 import {RootState} from "../store";
 import {Code} from "../constant";
@@ -22,7 +20,6 @@ const ProfileHeader: React.FC = () => {
           content: '更换头像成功!',
         });
         getBase64(file.file, (imageUrl: any) => {
-          // setLoading(false);
           setImageUrl(imageUrl);
           dispatch(updateAvatar(imageUrl));
         });
@@ -60,13 +57,11 @@ const ProfileHeader: React.FC = () => {
     };
     const handleChange = (info: any) => {
       if (info.file.status === 'uploading') {
-        // setLoading(true);
         return;
       }
       if (info.file.status === 'done') {
         getBase64(info.file.originFileObj, (imageUrl: any) => {
           setImageUrl(imageUrl);
-          // setLoading(false);
         });
       }
     };

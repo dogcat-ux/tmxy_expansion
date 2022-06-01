@@ -142,7 +142,6 @@ const CommonHeader: React.FC<HeaderProps> = ({score,
         <Grid.Item>
           <Space>
             <div className="gpa">累计分数 {Number(score).toFixed(2)}</div>
-            {/*<div className="gpa">累计分数 {parseInt()score}</div>*/}
           </Space>
         </Grid.Item>
       </Grid>

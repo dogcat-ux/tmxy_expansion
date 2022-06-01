@@ -11,7 +11,7 @@ export enum Code {
 //百度秘钥
 export const AK = "HtSGgaOXU4ABpx84uFyjC04urQdGYq0s"
 
-// export const BASE_URL = "http://139.9.196.99:3000/"
+//export const BASE_URL = "http://139.9.196.99:3000/"
 export const BASE_URL = "http://1.12.252.83:3000/"
 export const BaiDu_URL = "https://api.map.baidu.com/"
 export const PAGE1 = 1

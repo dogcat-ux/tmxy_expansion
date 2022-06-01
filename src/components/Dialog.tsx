@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react';
 import {createPortal} from 'react-dom';
 import "../assets/styles/components/dialog.scss"
-import {Divider} from 'antd';
-import {AutoCenter,Button, CapsuleTabs, Space} from "antd-mobile";
-import {DownOutline,DownFill} from 'antd-mobile-icons'
+import {Button, Space} from "antd-mobile";
 import {useNavigate} from "react-router-dom";
 
 const Dialog = (props: any) => {

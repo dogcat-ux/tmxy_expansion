@@ -203,13 +203,8 @@ const ActivityApply: React.FC = () => {
     setLat(e?.latlng?.lat.toFixed(6))
     const myGeo = new BMapGL.Geocoder();
     myGeo.getLocation(new BMapGL.Point(lng, lat), function (result) {
-      // console.log("result", result)
-      // console.log("result", result?.surroundingPoi)
-      // // @ts-ignore
-      // console.log("result", result?.surroundingPois)
       // @ts-ignore
       setLists(result?.surroundingPoi || result?.surroundingPois);
-      // setLists(e?.currentTarget?._spotDataOnCanvas);
     })
   }
   const onHighlight = (e: any) => {            // @ts-ignore
@@ -395,9 +390,7 @@ const ActivityApply: React.FC = () => {
     {isSign && <div className="location-select">
       <Search placeholder="搜索框如果要匹配准确请输入完整的省,市信息" id="ac" size="large" onSearch={onSearch}/>
       <AutoComplete input="ac" onHighlight={onHighlight} onConfirm={e => {
-        console.log("e", e)
       }} onSearchComplete={e => {
-        console.log("e", e);
       }}/>
       <div>
         <Map center={new BMapGL.Point(lng, lat)} zoom={18} tilt={60}

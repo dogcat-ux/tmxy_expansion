@@ -9,7 +9,6 @@ const Rank: React.FC = () => {
   const [items, setItems] = useState<API.rankResItem[]>();
   const sendApi = async (key?: number) => {
     const {data:{item}} = await rank()
-    console.log("item",item)
     setItems(item);
   }
   useEffect(() => {
